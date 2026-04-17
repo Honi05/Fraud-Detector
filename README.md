@@ -1,4 +1,4 @@
-# 🛡️ Reply Fraud Detection System (Masala_Tech)
+# 🛡️ Reply Fraud Detection System (Masala Techii)
 
 A multi-agent, LLM-assisted fraud detection pipeline built for the **Reply / ReplyMirror Challenge**.
 
@@ -291,5 +291,7 @@ Check:
 
 # 👥 Team
 
-**Masala_Tech**
-Reply / ReplyMirror Challenge
+**Masala Techii**
+Owes Mehboob 
+Sanya Khan 
+Honi Arora
