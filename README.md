@@ -289,12 +289,7 @@ Check:
 
 ---
 
-# 👥 Team
-
-**Masala Techii**
----
-Owes Mehboob 
----
-Sanya Khan 
----
+# 👥 **Masala Techii**
+Owes Mehboob<br>
+Sanya Khan<br>
 Honi Arora
