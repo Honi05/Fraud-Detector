@@ -292,6 +292,9 @@ Check:
 # 👥 Team
 
 **Masala Techii**
+---
 Owes Mehboob 
+---
 Sanya Khan 
+---
 Honi Arora
