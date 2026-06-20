@@ -1,76 +1,100 @@
-# 🛡️ Reply Fraud Detection System (Masala Techii)
+# Reply Fraud Detection System
 
-A multi-agent, LLM-assisted fraud detection pipeline built for the **Reply / ReplyMirror Challenge**.
+A multi-agent fraud detection framework developed for the Reply / ReplyMirror Challenge. The system combines machine learning, rule-based analysis, and large language model (LLM) capabilities to identify potentially fraudulent financial transactions.
 
 ---
 
-# 🚀 Quick Start (Run in 4 steps)
+## Quick Start
+
+### Installation
 
 ```bash
 pip install -r requirements.txt
-cp .env.example .env.py        # then fill in your key (see below)
-# edit .env.py and set OPENROUTER_API_KEY=sk-or-v1-...
+cp .env.example .env.py
+```
+
+Configure the API key in `.env.py`:
+
+```python
+OPENROUTER_API_KEY = "sk-or-v1-..."
+```
+
+### Execution
+
+```bash
 python main.py --data ./data --output ./output/predictions.txt
 ```
 
-👉 Output will be generated in: `./output/predictions.txt`
+Predictions will be generated in:
 
----
-
-# 🔑 Getting a Free OpenRouter API Key
-
-1. Sign up at **https://openrouter.ai** (free, no credit card required for free-tier models)
-2. Go to **Dashboard → API Keys → Create key**
-3. Paste the key into your `.env.py` file as `OPENROUTER_API_KEY=sk-or-v1-...`
-
-The default model (`google/gemini-2.0-flash-exp:free`) is **permanently free** — no billing needed.
-
----
-
-# ⚠️ IMPORTANT
-
-* This project **requires an OpenRouter API key** (free tier works fine)
-* Copy `.env.example` → `.env.py` and fill in your key before running
-* Never commit `.env.py` — it is listed in `.gitignore`
-
----
-
-# 🧠 Overview
-
-The system detects fraudulent transactions using a combination of:
-
-* Behavioral anomaly detection
-* Rule-based heuristics
-* LLM-based text risk analysis (SMS + emails)
-
-Fraud signals are derived from:
-
-* transaction patterns (amount, time, velocity)
-* user behavior drift
-* geographic inconsistencies
-* phishing-style text
-
----
-
-# 🏗️ Architecture
-
-```
-Data → FeatureAgent ↔ TextAgent (LLM)
-         ↓
-     ProfileAgent
-         ↓
-      RiskAgent
-         ↓
-    DecisionAgent
-         ↓
-   predictions.txt
+```text
+./output/predictions.txt
 ```
 
 ---
 
-# 📁 Project Structure
+## API Configuration
 
+This project requires an OpenRouter API key for LLM-assisted fraud analysis.
+
+### Obtaining an API Key
+
+1. Create an account at https://openrouter.ai
+2. Navigate to Dashboard → API Keys
+3. Generate a new API key
+4. Insert the key into `.env.py`
+
+The default model configuration utilizes a free-tier OpenRouter model and does not require billing information.
+
+---
+
+## System Overview
+
+The proposed framework identifies fraudulent activity by integrating multiple sources of evidence, including:
+
+* Transactional anomalies
+* Behavioral deviations
+* Geographical inconsistencies
+* Suspicious communication patterns in SMS and email content
+
+The architecture combines statistical methods with LLM-based semantic analysis to improve fraud detection performance.
+
+---
+
+## System Architecture
+
+```text
+Data Sources
+      │
+      ▼
+ FeatureAgent ───── TextAgent (LLM)
+      │
+      ▼
+ ProfileAgent
+      │
+      ▼
+  RiskAgent
+      │
+      ▼
+DecisionAgent
+      │
+      ▼
+predictions.txt
 ```
+
+### Component Description
+
+* **FeatureAgent**: Extracts transaction-based and contextual features.
+* **TextAgent**: Evaluates SMS and email content using an LLM to identify phishing or fraud-related language.
+* **ProfileAgent**: Models historical user behavior and detects deviations from normal activity.
+* **RiskAgent**: Aggregates risk indicators into a unified fraud score.
+* **DecisionAgent**: Applies adaptive thresholding and generates final fraud predictions.
+
+---
+
+## Project Structure
+
+```text
 fraud_project/
 ├── agents/
 ├── data/
@@ -87,209 +111,151 @@ fraud_project/
 
 ---
 
-# 📂 Input Data
+## Input Data
 
-Place files inside `./data/`:
+Place all datasets within the `data/` directory.
 
-Required:
+### Required
 
 * `transactions.csv`
 
-Recommended:
+### Optional but Recommended
 
 * `users.json`
 * `locations.json`
 * `sms.json`
 * `mails.json`
 
----
-
-# ⚙️ Setup
-
-### 1. Install dependencies
-
-```bash
-pip install -r requirements.txt
-```
-
-### 2. Set API key
-
-Linux / Mac:
-
-```bash
-export OPENROUTER_API_KEY=sk-or-...
-```
-
-Windows (PowerShell):
-
-```powershell
-setx OPENROUTER_API_KEY "sk-or-..."
-```
+Additional datasets improve behavioral and textual risk assessment.
 
 ---
 
-# 🚀 Running the Pipeline
+## Execution Pipeline
 
-```bash
-python main.py --data ./data --output ./output/predictions.txt
+The fraud detection workflow consists of the following stages:
+
+1. Data ingestion and preprocessing
+2. Feature extraction from transactional, temporal, geographical, and textual information
+3. User behavior profiling
+4. Anomaly detection using Isolation Forest
+5. Risk score computation
+6. Adaptive threshold application
+7. Fraud prediction generation
+
+---
+
+## LLM-Based Risk Analysis
+
+### Model
+
+```text
+openai/gpt-4.1-mini
 ```
 
-Optional parameters:
+### Applications
 
-```bash
-python main.py \
-  --data ./data \
-  --output ./output/predictions.txt \
-  --threshold 0.45 \
-  --flag-rate 0.15
-```
+* SMS phishing detection
+* Email fraud detection
+* Transaction description risk scoring
+
+The language model produces normalized risk scores and is integrated with deterministic safeguards and fallback mechanisms.
 
 ---
 
-# ⚙️ How It Works
+## Observability and Tracing
 
-1. Load all datasets
-2. Build features (amount, time, geo, text)
-3. Track user behavior (ProfileAgent)
-4. Train anomaly model (IsolationForest)
-5. Score each transaction
-6. Apply adaptive threshold (~15% flagged)
-7. Output fraud IDs
+The system integrates Langfuse for experiment tracking and LLM observability.
 
----
-
-# 🤖 LLM Integration
-
-* Model: `openai/gpt-4.1-mini` (via OpenRouter)
-* Used in:
-
-  * `TextAgent` → SMS/email fraud detection
-  * Training pipeline → description scoring
-
-The LLM:
-
-* detects phishing patterns
-* outputs a risk score (0–1)
-* uses strict prompting + fallback handling
-
----
-
-# 📊 Observability (Langfuse)
-
-To generate session ID for submission:
+Generate a submission session ID using:
 
 ```bash
 python trace_langfuse.py
 ```
 
-This:
+This process:
 
-* creates valid session ID
-* tracks LLM usage
-* logs traces to dashboard
+* Creates a valid session identifier
+* Logs LLM interactions
+* Records execution traces for evaluation and analysis
 
 ---
 
-# 🧪 Training (Optional)
+## Model Training
+
+To retrain the supervised model:
 
 ```bash
 python train_model.py
 ```
 
-This:
+Training includes:
 
-* builds weak labels
-* adds LLM risk features
-* trains RandomForest model
-* saves model to `models/`
+* Weak-label generation
+* Incorporation of LLM-derived features
+* Random Forest model training
+* Model persistence in the `models/` directory
 
 ---
 
-# 📤 Output Format (IMPORTANT)
+## Output Specification
 
-File:
+### Output File
 
 ```text
 output/predictions.txt
 ```
 
-Format:
+### Format
 
-```
+```text
 TX000123
 TX000456
 TX000789
 ```
 
-Rules:
+Requirements:
 
-* One transaction ID per line
-* No spaces
-* No empty lines
-* File name must remain `predictions.txt`
-
----
-
-# 📤 Submission Instructions
-
-1. Run the pipeline
-2. Upload `predictions.txt`
-3. Provide Langfuse session ID (from `trace_langfuse.py`)
+* One transaction identifier per line
+* No blank lines
+* No additional formatting
+* Output filename must remain `predictions.txt`
 
 ---
 
-# ⚠️ Common Issues
+## Submission Procedure
 
-### ❌ Missing pandas / sklearn
-
-```bash
-pip install -r requirements.txt
-```
+1. Execute the fraud detection pipeline.
+2. Upload the generated `predictions.txt` file.
+3. Provide the Langfuse session identifier generated by `trace_langfuse.py`.
 
 ---
 
-### ❌ API key error
+## Configuration Parameters
 
-Set:
-
-```bash
-export OPENROUTER_API_KEY=your_key
-```
-
----
-
-### ❌ Output rejected
-
-Check:
-
-* correct format
-* no blank lines
-* valid transaction IDs
+| Parameter     | Default Value | Description                               |
+| ------------- | ------------- | ----------------------------------------- |
+| `--threshold` | 0.45          | Base fraud risk threshold                 |
+| `--flag-rate` | 0.15          | Target proportion of flagged transactions |
+| LLM Model     | GPT-4.1 Mini  | Text-based risk scoring                   |
 
 ---
 
-# ⚙️ Key Configuration
-
-| Parameter     | Default      | Description               |
-| ------------- | ------------ | ------------------------- |
-| `--threshold` | 0.45         | base risk threshold       |
-| `--flag-rate` | 0.15         | % of transactions flagged |
-| LLM model     | gpt-4.1-mini | text risk scoring         |
-
----
-
-# 🧰 Tech Stack
+## Technology Stack
 
 * Python 3.10+
-* pandas / numpy
-* scikit-learn
-* lightgbm
-* OpenRouter (LLM)
-* Langfuse (tracing)
+* Pandas
+* NumPy
+* Scikit-learn
+* LightGBM
+* OpenRouter
+* Langfuse
 
 ---
 
-# 👥 **Masala Techii**
-Owes Mehboob<br>
-Sanya Khan<br>
-Honi Arora
+## Team
+
+**Masala Techii**
+
+* Owais Mehboob
+* Sanya Khan
+* Honi Arora
