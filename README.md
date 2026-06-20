@@ -2,6 +2,9 @@
 
 A multi-agent fraud detection framework developed for the Reply / ReplyMirror Challenge. The system combines machine learning, rule-based analysis, and large language model (LLM) capabilities to identify potentially fraudulent financial transactions.
 
+> **Dataset:** The data used by this project is hosted on Hugging Face and is not included in this repository.
+> Download it here: [honi05/FraudDetector](https://huggingface.co/datasets/honi05/FraudDetector)
+
 ---
 
 ## Quick Start
@@ -113,7 +116,7 @@ fraud_project/
 
 ## Input Data
 
-Place all datasets within the `data/` directory.
+All datasets are hosted on Hugging Face at [honi05/FraudDetector](https://huggingface.co/datasets/honi05/FraudDetector). Download and place them inside the `data/` directory before running the pipeline.
 
 ### Required
 
@@ -125,6 +128,7 @@ Place all datasets within the `data/` directory.
 * `locations.json`
 * `sms.json`
 * `mails.json`
+* `audio/` — call recordings
 
 Additional datasets improve behavioral and textual risk assessment.
 
